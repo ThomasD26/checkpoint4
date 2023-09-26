@@ -49,8 +49,40 @@ const add = (req, res) => {
       });
   };
 
+  const getProfile = (req, res) => {
+    models.user
+      .findAll()
+      .then(([rows]) => {
+        res.json(rows);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.sendStatus(500);
+      });
+  };
+  
+  const getUserById = (req, res) => {
+    const { userId } = req.params;
+  
+    models.user
+      .findById(userId)
+      .then(([rows]) => {
+        if (rows[0] == null) {
+          res.sendStatus(404);
+        } else {
+          res.json(rows[0]);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        res.sendStatus(500);
+      });
+  };
+
 module.export = {
     read,
     edit,
     add,
+    getProfile,
+    getUserById,
 };
